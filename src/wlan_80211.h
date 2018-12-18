@@ -153,15 +153,4 @@ struct ieee80211a_generic_frame {
 
 }__attribute__ ((__packed__));
 
-
-struct ieee80211_qos_control_field {
-
-  unsigned int tid:4 ;
-  unsigned int eosp:1 ;
-  unsigned int ack_policy:2 ;
-  unsigned int a_msdu_presence:1 ;
-  uint8_t txop_aka_buffer_aka_queue ;
-
-}__attribute__ ((__packed__));
-
 #endif

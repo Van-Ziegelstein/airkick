@@ -149,22 +149,21 @@ void decode_radiotap(const u_char *header_start, struct con_info *con_params)  {
 
 void decode_qos(const u_char *header_start, char *priority_buffer, int priority_buffsize) {
 
-  const struct ieee80211_qos_control_field *qos_hdr_field;
+  uint16_t qos_hdr_field = *((const uint16_t *)header_start);
+  char tid = qos_hdr_field >> 12;
    
-  qos_hdr_field = (const struct ieee80211_qos_control_field *)header_start;
    
-   
-  if (qos_hdr_field->tid & BE || qos_hdr_field->tid & EE)
+  if (tid & BE || tid & EE)
       strncpy(priority_buffer, "P: BE", priority_buffsize);
        
-  else if (qos_hdr_field->tid & BK || qos_hdr_field->tid & TID_)
+  else if (tid & BK || tid & TID_)
            strncpy(priority_buffer, "P: BG", priority_buffsize);    
         
-  else if (qos_hdr_field->tid & CL || qos_hdr_field->tid & VI)
+  else if (tid & CL || tid & VI)
            strncpy(priority_buffer, "P: VI", priority_buffsize);     
    
-  else if (qos_hdr_field->tid & VO || qos_hdr_field->tid & NC)
-            strncpy(priority_buffer, "P: VO", priority_buffsize); 
+  else if (tid & VO || tid & NC)
+           strncpy(priority_buffer, "P: VO", priority_buffsize); 
        
   else
       strncpy(priority_buffer, "P: XX", priority_buffsize);   
