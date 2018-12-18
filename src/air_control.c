@@ -73,8 +73,8 @@ struct con_info *find_wifi_sessions(const u_char *header_start, struct pkt_decod
      if (frame_metadata->to_ds == 1 && frame_metadata->from_ds == 0) {       
              
         if (memcmp(data_std_hdr->addr_1, empty_mac, ETH_ALEN) == 0
-            || memcmp(data_std_hdr->addr_1, broadcast, ETH_ALEN) == 0)
-//            || memcmp(data_std_hdr->addr_2, decode_res->local_mac, ETH_ALEN) == 0)
+            || memcmp(data_std_hdr->addr_1, broadcast, ETH_ALEN) == 0
+            || memcmp(data_std_hdr->addr_2, decode_res->local_mac, ETH_ALEN) == 0)
                return NULL;
              
         struct con_info *end_node = decode_res->framel_head;
