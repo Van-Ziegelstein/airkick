@@ -1,6 +1,7 @@
 #ifndef __80211_H
 #define __80211_H 1
 
+#include <stdint.h>
 
 /*  Some constants and structures to
  *  make sense" of wireless frames.
@@ -96,10 +97,10 @@
 
 struct ieee80211_radiotap_header {
 
-        unsigned char      it_version;     
-        unsigned char      it_pad;
-        unsigned short     it_len;         
-        unsigned int       it_present;     
+        uint8_t    it_version;     
+        uint8_t    it_pad;
+        uint16_t   it_len;         
+        uint32_t   it_present;     
 
 }__attribute__((__packed__));
 
@@ -144,11 +145,11 @@ struct frame_ctl_section {
 
 struct ieee80211a_generic_frame {
     
-  unsigned short duration_id;
+  uint16_t duration_id;
   unsigned char  addr_1[ETH_ALEN];
   unsigned char  addr_2[ETH_ALEN];
   unsigned char  addr_3[ETH_ALEN];
-  unsigned short seq_ctl;
+  uint16_t seq_ctl;
 
 }__attribute__ ((__packed__));
 
@@ -159,7 +160,7 @@ struct ieee80211_qos_control_field {
   unsigned int eosp:1 ;
   unsigned int ack_policy:2 ;
   unsigned int a_msdu_presence:1 ;
-  unsigned char txop_aka_buffer_aka_queue ;
+  uint8_t txop_aka_buffer_aka_queue ;
 
 }__attribute__ ((__packed__));
 
