@@ -23,6 +23,17 @@ pcap_t *main_devhandle = NULL;
 int status = EXIT_SUCCESS;
 
 
+/* Helper macro for signal setup */
+#define sig_establish(s, s_ops, old_op) \
+do { \
+      if (sigaction((s), &(s_ops), (old_op)) == -1) { \
+         perror("Failed to setup signal handler"); \
+         exit(EXIT_FAILURE); \
+      } \
+   } while(0)
+   
+
+
 int main(int argc, char *argv[]) {
 
   char *spoofed_mac = NULL, *bssid = NULL;
@@ -170,6 +181,12 @@ int main(int argc, char *argv[]) {
   
   else if (mode == AIR_BULLY) {
 
+       struct sigaction sig_ops; 
+       sig_ops.sa_handler = std_sighandler;
+       sig_ops.sa_flags = SA_RESTART;
+       sigemptyset(&sig_ops.sa_mask);
+
+
        if (air_data.wifi_dev_name == NULL)
           bail_out("Wireless card must be specified");
 
@@ -188,9 +205,9 @@ int main(int argc, char *argv[]) {
        if (errno != 0) 
           perror_exit("Invalid MAC addresses");
        
-       signal(SIGTERM, std_sighandler);
-       signal(SIGINT, std_sighandler);    
-       signal(SIGABRT, std_sighandler);
+       sig_establish(SIGTERM, sig_ops, NULL);
+       sig_establish(SIGINT, sig_ops, NULL);    
+       sig_establish(SIGABRT, sig_ops, NULL);
         
        deauth_frame_inject(air_data.wifi_dev_name, conv_client, conv_bssid);    
  
