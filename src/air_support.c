@@ -1,11 +1,10 @@
+#include "airconf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stropts.h>
 #include "air_support.h"
-#include "config.h"
 
-#define GNU_STRERROR_BUFFSIZE 1024
 
 void usage() {
 
@@ -60,9 +59,9 @@ void bail_out(char *err_msg) {
 
 void thr_err_msg(char *err_msg, int errnum) {
 
-    char transl_code[GNU_STRERROR_BUFFSIZE];
+    char transl_code[STRERROR_BUFFSIZE];
      
-    if (strerror_r(errnum, transl_code, GNU_STRERROR_BUFFSIZE) != 0)
+    if (strerror_r(errnum, transl_code, STRERROR_BUFFSIZE) != 0)
        puts(err_msg);
     else   
        printf("%s: %s\n", err_msg, transl_code);

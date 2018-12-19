@@ -1,3 +1,4 @@
+#include "airconf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,9 +9,6 @@
 #include "housekeeping.h"
 #include "main.h"
 
-
-/* the default maximum of tracked connections */
-#define MAX_CON_DEFAULT 5
 
 /* Operation modes */
 #define AIR_SPY  1

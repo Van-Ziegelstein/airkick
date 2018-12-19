@@ -1,3 +1,4 @@
+#include "airconf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,6 @@
 #include "air_support.h"
 #include "air_pollution.h"
 
-#define FLUSH_PERIOD 600
 
 struct wireless_scan *scan_local_aps(char *interface, char *scan_type) {
 
