@@ -94,6 +94,7 @@
 #define DEAUTH_REASON_FIELD_LEN 2
 #define SSID_OFFSET 12
 
+/* Meta header prepended to packets by the NIC driver */
 
 struct ieee80211_radiotap_header {
 
@@ -105,46 +106,11 @@ struct ieee80211_radiotap_header {
 }__attribute__((__packed__));
 
 
-# if __BYTE_ORDER == __LITTLE_ENDIAN
-struct frame_ctl_section {
-
-  unsigned int   proto_version:2 ;
-  unsigned int   type:2 ;
-  unsigned int   subtype:4 ;
-  unsigned int   to_ds:1 ;
-  unsigned int   from_ds:1 ;
-  unsigned int   more_frag:1 ;
-  unsigned int   retry:1 ;
-  unsigned int   pwr_mgt:1 ;
-  unsigned int   more_data:1 ;
-  unsigned int   protection:1 ;  
-  unsigned int   order:1 ;
-
-}__attribute__ ((__packed__));    
-#endif
-# if __BYTE_ORDER == __BIG_ENDIAN
-struct frame_ctl_section {
-
-  unsigned int   subtype:4 ;
-  unsigned int   type:2 ;
-  unsigned int   proto_version:2 ;
-  unsigned int   order:1 ;
-  unsigned int   protection:1 ;
-  unsigned int   more_data:1 ;
-  unsigned int   pwr_mgt:1 ;
-  unsigned int   retry:1 ;
-  unsigned int   more_frag:1 ;
-  unsigned int   from_ds:1 ;
-  unsigned int   to_ds:1 ; 
-
-}__attribute__ ((__packed__));  
-#endif  
-
-
-//This struct serves as a template for standard managment and data frames.
+/* This struct serves as a template for standard managment and data frames. */
 
 struct ieee80211a_generic_frame {
     
+  uint16_t frame_ctl;
   uint16_t duration_id;
   unsigned char  addr_1[ETH_ALEN];
   unsigned char  addr_2[ETH_ALEN];

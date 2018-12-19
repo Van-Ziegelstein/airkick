@@ -59,18 +59,23 @@ struct wireless_scan *scan_local_aps(char *interface, char *scan_type) {
 struct con_info *find_wifi_sessions(const u_char *header_start, struct pkt_decode_opts *decode_res) {
       
   const struct ieee80211_radiotap_header *radio_h;
-  const struct frame_ctl_section *frame_metadata;
+  const struct ieee80211a_generic_frame *data_std_hdr;
+  char frame_type;
   u_char empty_mac[] = { 0, 0, 0, 0, 0, 0 }, broadcast[] = { 255, 255, 255, 255, 255, 255};
         
          
   radio_h = (const struct ieee80211_radiotap_header *)header_start;
-  frame_metadata = (const struct frame_ctl_section *)(header_start + radio_h->it_len);  
+  data_std_hdr = (const struct ieee80211a_generic_frame *)(header_start + radio_h->it_len);  
+  frame_type = (data_std_hdr->frame_ctl >> 2) & 3;
+
       
-  if (frame_metadata->type == DATA_FRAME) {
+  if (frame_type == DATA_FRAME) {
       
-     const struct ieee80211a_generic_frame *data_std_hdr = (const struct ieee80211a_generic_frame *)((const u_char *)frame_metadata + FRAME_CTL_LEN);     
-      
-     if (frame_metadata->to_ds == 1 && frame_metadata->from_ds == 0) {       
+     char to_ds = (data_std_hdr->frame_ctl >> 8) & 1; 
+     char from_ds = (data_std_hdr->frame_ctl >> 9) & 1;
+     char subtype = (data_std_hdr->frame_ctl >> 4) & 0x0f;
+
+     if (to_ds == 1 && from_ds == 0) {       
              
         if (memcmp(data_std_hdr->addr_1, empty_mac, ETH_ALEN) == 0
             || memcmp(data_std_hdr->addr_1, broadcast, ETH_ALEN) == 0
@@ -95,8 +100,8 @@ struct con_info *find_wifi_sessions(const u_char *header_start, struct pkt_decod
                           
         decode_radiotap(header_start, end_node);             
                   
-        if (frame_metadata->subtype & QOS_DATA)
-           decode_qos(header_start + FRAME_CTL_LEN + sizeof(struct ieee80211a_generic_frame), end_node->qos_priority, sizeof(end_node->qos_priority)); 
+        if (subtype & QOS_DATA)
+           decode_qos(header_start + sizeof(struct ieee80211a_generic_frame), end_node->qos_priority, sizeof(end_node->qos_priority)); 
         else   
            strncpy(end_node->qos_priority, "QS: -", sizeof(end_node->qos_priority));
                                 

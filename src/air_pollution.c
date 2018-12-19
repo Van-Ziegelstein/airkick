@@ -25,7 +25,7 @@ static u_char *build_deauth_frame(u_char *client, u_char *bssid, int *mgmt_frame
   uint16_t reason_code = LEAVING;
 
 
-  *mgmt_frame_size = FRAME_CTL_LEN + sizeof(struct ieee80211a_generic_frame) + DEAUTH_REASON_FIELD_LEN;
+  *mgmt_frame_size = sizeof(struct ieee80211a_generic_frame) + DEAUTH_REASON_FIELD_LEN;
   build_buff_size = *mgmt_frame_size + sizeof(radiotap_preamble) + FCS_LEN;
   packet = calloc(build_buff_size, sizeof(char));    
 
@@ -37,11 +37,8 @@ static u_char *build_deauth_frame(u_char *client, u_char *bssid, int *mgmt_frame
   memcpy(packet, radiotap_preamble, sizeof(radiotap_preamble)); 
   mgmt_frame_p = packet + sizeof(radiotap_preamble);
  
-  *mgmt_frame_p = (MANAGEMENT_FRAME << 2 | DEAUTHENTICATION << 4);
-  mgmt_frame_p[1] = 0;
-  mgmt_frame_p += FRAME_CTL_LEN;
- 
   mgmt_hdr_core = (struct ieee80211a_generic_frame *)mgmt_frame_p;
+  mgmt_hdr_core->frame_ctl = MANAGEMENT_FRAME << 2 | DEAUTHENTICATION << 4;
  
   memcpy(mgmt_hdr_core->addr_1, bssid, ETH_ALEN);
   memcpy(mgmt_hdr_core->addr_2, client, ETH_ALEN);
