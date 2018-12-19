@@ -30,6 +30,7 @@ AC_CHECK_HEADERS([stdlib.h unistd.h])
 AC_TYPE_SIZE_T
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
+AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
