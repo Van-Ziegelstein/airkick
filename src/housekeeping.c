@@ -136,6 +136,7 @@ pcap_t *pcap_init(char *interface) {
 
     char errbuf[PCAP_ERRBUF_SIZE];
     pcap_t *dev_handle;
+    int err;
   
     dev_handle = pcap_create(interface, errbuf);
     if (dev_handle == NULL) {
@@ -153,7 +154,15 @@ pcap_t *pcap_init(char *interface) {
     else
         puts("Warning, could not put device into monitor mode!");
           
-    pcap_activate(dev_handle);
+    err = pcap_activate(dev_handle); 
+    if (err != 0) {
+       
+       pcap_perror(dev_handle, "Error when activating device");
+
+       if (err < 0)
+          exit(EXIT_FAILURE);
+
+    }
 
     return dev_handle;
  
