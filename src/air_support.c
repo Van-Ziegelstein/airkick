@@ -183,9 +183,12 @@ void display_connection(struct wireless_scan *ap_entry, struct con_info *frame) 
   while (ap_entry != NULL) {
            
          if (memcmp(frame->core_h.addr_1, ap_entry->ap_addr.sa_data, ETH_ALEN) == 0
-             && ap_entry->b.has_essid == 1)
-                printf(" SSID: %s", ap_entry->b.essid);
-           
+             && ap_entry->b.has_essid) {
+                
+		printf(" SSID: %s", ap_entry->b.essid);
+		break;
+         }  
+
          ap_entry = ap_entry->next;    
                
   }
