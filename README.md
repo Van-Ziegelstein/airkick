@@ -7,6 +7,8 @@ C implementation of the classic WLAN deauthentication attack.
 
 [Usage](#Usage)
 
+[Screenshots](#screenshots)
+
 [Limitations](#Limitations)
 
 ## The Hell Is This??
@@ -90,6 +92,16 @@ comprehensive than with the active counterpart.
 (tweakable at compile time) of tracked connections. This parameter can be used to increase
 the tracking limit. Beware, though, that the impact of doing so might be significant, especially
 in flood mode (Every thread gets its own packet buffer and pcap handle). Use this option at your own risk.
+
+## Screenshots
+
+| Finding active connections | 
+| --- |
+| <img src="screenshots/mon1.png"> | 
+
+| Cleansing the air |
+| --- |
+| <img src="screenshots/flood1.png"> |
 
 
 ## Limitations
