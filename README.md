@@ -1,13 +1,13 @@
 # airkick
 C implementation of the classic WLAN deauthentication attack.
 
-[Dependencies](#Dependencies)
+[Prerequisites](#Prerequisites)
 
 [Installation](#Installation)
 
 [Usage](#Usage)
 
-[Screenshots](#screenshots)
+[Screenshots](#Screenshots)
 
 [Limitations](#Limitations)
 
@@ -25,9 +25,14 @@ and write forged ones to the wire. Mode 1 implements a minimal parser with the p
 of identifying potential targets. Mode 3 builds on mode 1 by additionally dispatching 
 frame injection threads for every connection discovered.
 
-## Dependencies
+## Prerequisites
 This program was designed for Linux platforms, other operating systems are not supported.
-It requires the following libraries to run:
+
+##### Hardware requirements
+Your wireless card should support capturing packets in [promiscuous mode](https://en.wikipedia.org/wiki/Promiscuous_mode) 
+as well as packet injection, ideally **at the same time**. Otherwise errors are likely to occur.
+
+##### Library Dependencies
 * [iwlib](https://hewlettpackard.github.io/wireless-tools/Tools.html) from wireless tools *(for scanning and some other stuff)*.
 * [libpcap](http://www.tcpdump.org/) *(packet capture and injection)*.
 * [libnet](https://sourceforge.net/projects/libnet-dev/) *(currently only used for the CRC checksum)*.
