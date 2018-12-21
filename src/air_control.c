@@ -149,7 +149,7 @@ void air_watch(u_char *session_args, const struct pcap_pkthdr *cap_header, const
       air_intel->start_time = time(NULL);
       contrack = 0;
         
-      puts(">>>>>>> Flushing track record <<<<<<<");
+      puts(">>>>>>> Flushing track record <<<<<<<\n");
         
   }   
 
