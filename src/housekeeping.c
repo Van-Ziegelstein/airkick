@@ -1,3 +1,4 @@
+#include <airconf.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -146,7 +147,7 @@ pcap_t *pcap_init(char *interface) {
 
     }
  
-    pcap_set_snaplen(dev_handle, 4096);
+    pcap_set_snaplen(dev_handle, MAX_CAP_SIZE);
     pcap_set_promisc(dev_handle, 1);
  
     if (pcap_can_set_rfmon(dev_handle) == 1)     
