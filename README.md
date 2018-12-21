@@ -41,7 +41,15 @@ Additionally, the parallelism of mode 3 is implemented via Posix Threads. So mak
 of the pthreads API is present.
 
 ## Installation
-TODO
+This project is built with the \*shivers\* [autotools](http://www.gnu.org/software/autoconf). Download the sources from
+the [Release](https://github.com/Van-Ziegelstein/airkick/releases) page and cd into the unpacked directory. Then initialize, configure and make:
+
+``` 
+autoreconf -i
+./configure
+make
+```
+
 
 ## Usage
 The program is meant to be run from the commandline. You will most likely need elevated privileges in order
