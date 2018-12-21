@@ -41,8 +41,14 @@ Additionally, the parallelism of mode 3 is implemented via Posix Threads. So mak
 of the pthreads API is present.
 
 ## Installation
+
+##### Quickstart
+Download the latest version from the [Release](https://github.com/Van-Ziegelstein/airkick/releases) page and extract 
+the contents. The root directory should contain an ELF executable ready for action.
+
+##### Building From Source
 This project is built with the \*shivers\* [autotools](http://www.gnu.org/software/autoconf). Download the sources from
-the [Release](https://github.com/Van-Ziegelstein/airkick/releases) page and cd into the unpacked directory. Then initialize, configure and make:
+the Release page and cd into the unpacked directory. Then initialize, configure and make:
 
 ``` 
 autoreconf -i
