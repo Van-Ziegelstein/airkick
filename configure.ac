@@ -8,7 +8,7 @@ AC_CONFIG_SRCDIR([src/housekeeping.h])
 AC_CONFIG_HEADERS([config.h])
 
 # Some preprocessor macros
-AC_DEFINE([MAX_CON_DEFAULT], [5], [Default maximum of tracked connections])
+AC_DEFINE([MAX_CON_DEFAULT], [10], [Default maximum of tracked connections])
 AC_DEFINE([FLUSH_PERIOD], [600], [Time frame (in seconds) after which the connection backlog is flushed])
 AC_DEFINE([STRERROR_BUFFSIZE], [1024], [Size of the error code buffer for strerror_r])
 
