@@ -2,6 +2,7 @@
 !.gitignore
 !*.am
 !*.ac
+!screenshots/
 !src/
 src/*
 !src/*.c
