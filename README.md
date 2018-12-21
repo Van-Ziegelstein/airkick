@@ -126,3 +126,6 @@ and in its current shape this little toy might soon be a relic of the "good old 
 
 ## Authors
 **Van Ziegelstein** - Creator and Maintainer
+
+## License
+This project is licensed under the [GPL](COPYING).
