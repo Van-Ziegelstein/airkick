@@ -8,34 +8,25 @@
 
 void usage() {
 
-   char *messages[22] = { 
+   char *messages[13] = { 
    
-        "This program can bump wlan clients off the network by sending spoofed deauthentication frames.\n\n",
+        "This program bumps wlan clients off the network by sending spoofed deauthentication frames.\n\n",
         "Currently there are three operation modes:\n\n", 
-        "- Mode 1: Tracking of connections in the vicinity. Intended to help identify potential targets.\n",
+        "- Mode 1: Tracking of connections in the vicinity.\n",
         "Invocation: "PACKAGE_NAME" -m -i <interface> [ -c max_connections ] [ -t active|passive ]\n\n",
         "- Mode 2: Deauthentication of a single client.\n",
         "Invocation: "PACKAGE_NAME" -d -i <interface> -s <spoofed mac> -b <bssid>\n\n",
-        "- Mode 3 (still experimental): Mass DoS-style attack against all connections in the local area.\n",
+        "- Mode 3 (still experimental): DoS-style attack against all connections in the local area.\n",
         "Invocation: "PACKAGE_NAME" -f -i <interface> [ -c max_connections ] [ -t active|passive ]\n\n",
 	"Options:\n\n",
 	"-s: the client mac address to spoof (format: xx:xx:xx:xx:xx:xx).\n",
 	"-b: the bssid of the access point (format: xx:xx:xx:xx:xx:xx).\n",
 	"-c: the maximum amount of connections to track in mode 1 and 3.\n",
 	"-t: whether to query the local access points in an active scan or observe their beacon frames passively.\n\n",
-        "Technical remarks: The default maximum of tracked connections is determined at compile time.\n",
-        "Before you make use of the -t option, beware that the deauthentication flood of Mode 3 is threaded!\n",
-        "The program will craft packets for every identified client in a seperate thread.\n",
-        "Increase at your own risk.\n\n",
-        "A word of caution: The program keeps clients deauthenticated by repeatedly sending frames.\n",
-        "Even when targeting a single client as in Mode 2 this sudden increase in deauthentication frames\n",
-        "can be observed with packet sniffers and thus possibly alert the local network admin.\n",
-        "As for Mode 3...\n",
-        "Well, all network security assets will have to be sleeping for that flood to pass unnoticed.\n\n"    
         
    };     
 
-   for (int i = 0; i < 22; i++)
+   for (int i = 0; i < 13; i++)
         printf("%s", messages[i]);
    
    exit(EXIT_SUCCESS);
