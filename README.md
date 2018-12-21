@@ -43,8 +43,8 @@ of the pthreads API is present.
 ## Installation
 
 ##### Quickstart
-Download the latest version from the [Release](https://github.com/Van-Ziegelstein/airkick/releases) page and extract 
-the contents. The root directory should contain an ELF executable ready for action.
+Go to the [Release](https://github.com/Van-Ziegelstein/airkick/releases) page and locate the latest version. The assets should 
+contain an ELF executable ready for download.
 
 ##### Building From Source
 This project is built with the \*shivers\* [autotools](http://www.gnu.org/software/autoconf). Download the sources from
