@@ -8,25 +8,26 @@
 
 void usage() {
 
-   char *messages[13] = { 
+   char *messages[14] = { 
    
-        "This program bumps wlan clients off the network by sending spoofed deauthentication frames.\n\n",
+        "Utility to bump wlan clients off the network with spoofed deauthentication or disassociation frames.\n\n",
         "Currently there are three operation modes:\n\n", 
-        "- Mode 1: Tracking of connections in the vicinity.\n",
-        "Invocation: "PACKAGE_NAME" -m -i <interface> [ -c max_connections ] [ -t active|passive ]\n\n",
+        "- Mode 1: Tracking connections in the vicinity.\n",
+        "Invocation: "PACKAGE_NAME" -m -i <interface> [ -c max_connections ] [ -p ]\n\n",
         "- Mode 2: Deauthentication of a single client.\n",
-        "Invocation: "PACKAGE_NAME" -d -i <interface> -s <spoofed mac> -b <bssid>\n\n",
-        "- Mode 3 (still experimental): DoS-style attack against all connections in the local area.\n",
-        "Invocation: "PACKAGE_NAME" -f -i <interface> [ -c max_connections ] [ -t active|passive ]\n\n",
+        "Invocation: "PACKAGE_NAME" -d -i <interface> -s <spoofed mac> -b <bssid> [ -a ]\n\n",
+        "- Mode 3: DoS-style attack against all connections in the local area.\n",
+        "Invocation: "PACKAGE_NAME" -f -i <interface> [ -c max_connections ] [ -p ] [ -a ]\n\n",
 	"Options:\n\n",
 	"-s: the client mac address to spoof (format: xx:xx:xx:xx:xx:xx).\n",
 	"-b: the bssid of the access point (format: xx:xx:xx:xx:xx:xx).\n",
 	"-c: the maximum amount of connections to track in mode 1 and 3.\n",
-	"-t: whether to query the local access points in an active scan or observe their beacon frames passively.\n\n",
+	"-p: Don't send probe requests but observe beacon frames passively instead.\n",
+	"-a: Send disassociation instead of deauthentication frames.\n\n" 
         
    };     
 
-   for (int i = 0; i < 13; i++)
+   for (int i = 0; i < 14; i++)
         printf("%s", messages[i]);
    
    exit(EXIT_SUCCESS);
