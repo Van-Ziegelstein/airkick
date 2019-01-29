@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
   opterr = 0;
 
-  while ((option = getopt(argc, argv, ":hfmdpi:s:b:c:")) != -1) {
+  while ((option = getopt(argc, argv, ":hfmdpai:s:b:c:")) != -1) {
 
         switch(option) {
 
@@ -87,6 +87,11 @@ int main(int argc, char *argv[]) {
 	    case 'p':
 	    air_data.cmd_opts |= PASSIVE_SCAN;
 	    break;   
+
+
+            case 'a':
+	    air_data.cmd_opts |= DISASSOCIATION_REQ;
+	    break;
 
 
 	    case '?':
@@ -207,7 +212,7 @@ int main(int argc, char *argv[]) {
        sig_establish(SIGINT, sig_ops, NULL);    
        sig_establish(SIGABRT, sig_ops, NULL);
         
-       deauth_frame_inject(air_data.wifi_dev_name, conv_client, conv_bssid);    
+       deauth_frame_inject(air_data.wifi_dev_name, conv_client, conv_bssid, air_data.cmd_opts);    
  
        free(conv_client);
        free(conv_bssid);

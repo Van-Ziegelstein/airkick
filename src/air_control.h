@@ -13,6 +13,7 @@ struct frame_thrower {
     u_char client[ETH_ALEN];
     u_char bssid[ETH_ALEN];
     char *dev_name;
+    char frame_opts;
     struct frame_thrower *next;
     
 };

@@ -206,6 +206,7 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
           memcpy(bombard->client, tail_frame->core_h.addr_2, ETH_ALEN);
           memcpy(bombard->bssid, tail_frame->core_h.addr_1, ETH_ALEN);
           bombard->dev_name = air_intel->wifi_dev_name;
+	  bombard->frame_opts = air_intel->cmd_opts;
 	  bombard->term_mx = air_intel->term_mx;
 	  bombard->pcap_mx = air_intel->pcap_mx;
 

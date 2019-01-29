@@ -12,6 +12,7 @@
 
 /* Commandline options */
 #define PASSIVE_SCAN (1 << 0)
+#define DISASSOCIATION_REQ (1 << 1)
 
 /* declaration of shared global variables */
 

