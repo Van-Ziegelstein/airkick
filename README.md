@@ -17,8 +17,8 @@ wifi [deauthentication attack](https://en.wikipedia.org/wiki/Wi-Fi_deauthenticat
 Currently there are three modes of operation:
 
 1. Discovery of active wifi sessions in the vicinity.
-2. Deauthentication of a single client.
-3. DoS-style mass deauthentication of all discovered sessions.
+2. Deauthentication/Disassociation of a single client.
+3. DoS-style mass deauthentication/disassociation of all discovered sessions.
 
 The program uses the standard pcap routines to read packets from a capture interface
 and write forged ones to the wire. Mode 1 implements a minimal parser with the purpose
@@ -48,7 +48,7 @@ contain an ELF executable ready for download.
 
 ##### Building From Source
 This project is built with the \*shivers\* [autotools](http://www.gnu.org/software/autoconf). Download the sources from
-the Release page and cd into the unpacked directory. Then initialize, configure and make:
+the Release page and `cd` into the unpacked directory. Then initialize, configure and make:
 
 ``` 
 autoreconf -i
@@ -65,7 +65,7 @@ modes by supplying the appropriate parameter:
 #### -m 
 Monitoring active sessions that are close by. Command format:
 
-`airkick -m -i <myNIC> [ -c max_connections ] [ -t active|passive ]`
+`airkick -m -i <myNIC> [ -c max_connections ] [ -p ]`
 
 The program will first perform a scan (via iwlib) to get a list of the
 local access points. It will then watch for data frames sent to the stations
@@ -74,7 +74,7 @@ and print the source mac addresses to the console.
 #### -d
 Deauthentication of a single client device. Command format:
 
-`airkick -d -i <myNIC> -s <spoofed client mac> -b <bssid>` 
+`airkick -d -i <myNIC> -s <spoofed client mac> -b <bssid> [ -a ]` 
 
 This mode can be used to target a single machine whose mac address is already known.
 `<spoofed client mac>` should be a string of the form `XX:XX:XX:XX:XX:XX`. Likewise, `<bssid>` 
@@ -83,11 +83,10 @@ is supposed to be the mac address of the access point (in the same format).
 #### -f
 Automatic deauthentication of all discovered sessions. Command format:
 
-`airkick -f -i <myNIC> [ -c max_connections ] [ -t active|passive ]`
+`airkick -f -i <myNIC> [ -c max_connections ] [ -p ] [ -a ]`
 
 This mode acts as an extension of the watch functionality. 
 Instead of just monitoring data frames, the program will actively block clients at first sight. 
-Each target gets assigned to its own thread with separate pcap handles and packet buffers.
 
 **Warning:** This mode is anything but subtle. Unless the local network admins are on vacation
 (and have taken the entire IDS with them) there's no way that sudden deauthentication flood will
@@ -100,7 +99,7 @@ pass unnoticed.
 *myNIC* should be the device name as it appears in ifconfig/ip, e.g. `wlan0`.  
 
 ###### Optional
-* `-t passive|active`: This determines whether iwlib should conduct a passive or active scan. The passive scan has the
+* `-p`: If this parameter is supplied, iwlib will conduct a passive scan. The passive scan has the
 advantage of being "listen only", so no probe requests are sent to APs. Thus the mac address of the
 attacking machine should not show up in any log files. However, scan results will likely be less 
 comprehensive than with the active counterpart.
@@ -110,7 +109,9 @@ comprehensive than with the active counterpart.
 * `-c max_connections`: When using mode 1 or 3, *airkick* limits itself to a conservative default 
 (tweakable at compile time) of tracked connections. This parameter can be used to increase
 the tracking limit. Beware, though, that the impact of doing so might be significant, especially
-in flood mode (Every thread gets its own packet buffer and pcap handle). Use this option at your own risk.
+in flood mode (every thread gets its own packet buffer and pcap handle). Use this option at your own risk.
+
+* `-a`: When blocking clients, *airkick* defaults to deauthentication frames. This option can be used to switch to disassociation frames should the need arise.
 
 ## Screenshots
 
@@ -127,9 +128,6 @@ in flood mode (Every thread gets its own packet buffer and pcap handle). Use thi
 
 * *airkick* is by no means a complete wireless suite. If you need complete wireless auditing functionality, a tool
 like [aircrack-ng](https://www.aircrack-ng.org/) will serve you far better than this steaming pile of code.
-
-* The program's injection capabilities are (for now) limited to deauthentication frames. Disassociation frames are not
-covered.
 
 * It might be possible to build this tool on BSD systems, but no testing has been done so far.
 
