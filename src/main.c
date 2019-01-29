@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
      air_data.term_mx = &term_mx;
 
      
-     /*  It would seem like the pthread_activate() function writes
+     /*  It would seem like the pcap_activate() function writes
       *  to a static variable to track state. Because of this
       *  we need a mutex to prevent a race during initialization.
       */
