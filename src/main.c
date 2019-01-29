@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
   opterr = 0;
 
-  while ((option = getopt(argc, argv, ":hfmdi:s:b:c:t:")) != -1) {
+  while ((option = getopt(argc, argv, ":hfmdpi:s:b:c:")) != -1) {
 
         switch(option) {
 
@@ -84,8 +84,8 @@ int main(int argc, char *argv[]) {
 	    break;
 
 
-	    case 't':
-	    air_data.scan_type = optarg;
+	    case 'p':
+	    air_data.cmd_opts |= PASSIVE_SCAN;
 	    break;   
 
 

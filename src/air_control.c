@@ -9,7 +9,7 @@
 #include "air_pollution.h"
 
 
-struct wireless_scan *scan_local_aps(char *interface, char *scan_type) {
+struct wireless_scan *scan_local_aps(char *interface, char opts) {
 
   int sockfd;
   struct iwreq scan_payload;
@@ -21,7 +21,7 @@ struct wireless_scan *scan_local_aps(char *interface, char *scan_type) {
  
   memset(&scan_options, '\0', sizeof(struct iw_scan_req));
 
-  if (scan_type != NULL && strcmp(scan_type, "passive") == 0)
+  if (opts & PASSIVE_SCAN) 
      scan_options.scan_type = IW_SCAN_TYPE_PASSIVE;
   else
      scan_options.scan_type = IW_SCAN_TYPE_ACTIVE;

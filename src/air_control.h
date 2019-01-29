@@ -28,7 +28,7 @@ struct pkt_decode_opts {
 
 /* main routines to interact with the wireless world */
 
-struct wireless_scan *scan_local_aps(char *interface, char *scan_type);
+struct wireless_scan *scan_local_aps(char *interface, char opts);
 
 void air_watch(u_char *session_args, const struct pcap_pkthdr *cap_header, const u_char *packet);
 

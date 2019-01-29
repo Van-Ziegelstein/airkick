@@ -10,6 +10,9 @@
 #include "wlan_80211.h"
 
 
+/* Commandline options */
+#define PASSIVE_SCAN (1 << 0)
+
 /* declaration of shared global variables */
 
 extern int termflag;
@@ -29,7 +32,7 @@ struct airloop_params {
     time_t start_time;
     struct frame_thrower *attackers; 
     char *wifi_dev_name;
-    char *scan_type;
+    char cmd_opts;
 };
 
 #endif

@@ -179,7 +179,7 @@ void capture_session_setup(struct airloop_params *cap_options) {
         bail_out("Bad connection number");
       
  
-    cap_options->ap_list = scan_local_aps(cap_options->wifi_dev_name, cap_options->scan_type); 
+    cap_options->ap_list = scan_local_aps(cap_options->wifi_dev_name, cap_options->cmd_opts); 
     cap_options->start_time = time(NULL);
     
     cap_options->decode_options = check_calloc(1, sizeof(struct pkt_decode_opts));
