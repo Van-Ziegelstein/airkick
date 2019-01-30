@@ -29,6 +29,8 @@ void *check_malloc(size_t size);
 
 void *check_calloc(size_t blocknum, size_t blocksize);
 
+int load_vendors(char *mapped_macs);
+
 
 /* Session management */
 
