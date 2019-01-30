@@ -210,7 +210,7 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
 	  bombard->term_mx = air_intel->term_mx;
 	  bombard->pcap_mx = air_intel->pcap_mx;
 
-          int err = pthread_create(&bombard->thr_id, NULL, deauth_frame_inject_thr, bombard);
+          int err = pthread_create(&bombard->thr_id, NULL, frame_inject_thr, bombard);
           if (err != 0) {
          
              thr_err_msg("Thread creation failed", err);

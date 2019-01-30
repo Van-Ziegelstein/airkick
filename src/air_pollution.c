@@ -17,7 +17,7 @@ static u_char radiotap_preamble [] = {
 };
 
 
-static u_char *build_deauth_frame(u_char *client, u_char *bssid, char frame_type, int *mgmt_frame_size, u_char **frame_tail) {
+static u_char *build_frame(u_char *client, u_char *bssid, char frame_type, int *mgmt_frame_size, u_char **frame_tail) {
 
   u_char *packet, *mgmt_frame_p;
   int build_buff_size;
@@ -61,13 +61,13 @@ static u_char *build_deauth_frame(u_char *client, u_char *bssid, char frame_type
 }
 
 
-void deauth_frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) {
+void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) {
  
   u_char *packet, *frame_p = NULL; 
   int frame_size;
   struct ieee80211a_generic_frame *hdr_core;
   
-  packet = build_deauth_frame(client, bssid, frame_opts, &frame_size, &frame_p);
+  packet = build_frame(client, bssid, frame_opts, &frame_size, &frame_p);
 
   if (packet == NULL)
      perror_exit("Failed to allocate packet memory");
@@ -111,7 +111,7 @@ void deauth_frame_inject(char *device, u_char *client, u_char *bssid, char frame
 } 
 
 
-void *deauth_frame_inject_thr(void *job_args) {
+void *frame_inject_thr(void *job_args) {
  
   u_char *frame_p = NULL;
   int frame_size;
@@ -122,7 +122,7 @@ void *deauth_frame_inject_thr(void *job_args) {
   pthread_cleanup_push(inj_thr_cleanup, &inj_assets);
   struct frame_thrower *inj_args = (struct frame_thrower *) job_args;
 
-  inj_assets.packet = build_deauth_frame(inj_args->client, inj_args->bssid, inj_args->frame_opts, &frame_size, &frame_p);
+  inj_assets.packet = build_frame(inj_args->client, inj_args->bssid, inj_args->frame_opts, &frame_size, &frame_p);
 
   if (inj_assets.packet == NULL) {
      

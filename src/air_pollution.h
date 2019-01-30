@@ -13,8 +13,8 @@ struct inj_thr_res {
 };
 
 
-void deauth_frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts);
+void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts);
 
-void *deauth_frame_inject_thr(void *job_args);
+void *frame_inject_thr(void *job_args);
 
 #endif

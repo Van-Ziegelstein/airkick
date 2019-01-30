@@ -212,7 +212,7 @@ int main(int argc, char *argv[]) {
        sig_establish(SIGINT, sig_ops, NULL);    
        sig_establish(SIGABRT, sig_ops, NULL);
         
-       deauth_frame_inject(air_data.wifi_dev_name, conv_client, conv_bssid, air_data.cmd_opts);    
+       frame_inject(air_data.wifi_dev_name, conv_client, conv_bssid, air_data.cmd_opts);    
  
        free(conv_client);
        free(conv_bssid);
