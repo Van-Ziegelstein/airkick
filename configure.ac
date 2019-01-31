@@ -44,5 +44,5 @@ AC_FUNC_MMAP
 AC_FUNC_STRERROR_R
 AC_CHECK_FUNCS([memset munmap regcomp])
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile data/Makefile])
 AC_OUTPUT
