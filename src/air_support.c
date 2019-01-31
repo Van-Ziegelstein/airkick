@@ -178,11 +178,12 @@ void prefix_lookup(unsigned char *client, char *vendors) {
      if (regexec(&pattern_buff, vendors, 2, match, 0) == 0 && match[1].rm_so != -1) 
         fwrite(vendors + match[1].rm_so, match[1].rm_eo - match[1].rm_so, 1, stdout);
      else 
-        puts("unknown"); 
+        fputs("unknown", stdout); 
 
      regfree(&pattern_buff);   
 
 }
+
 
 void display_connection(struct wireless_scan *ap_entry, char *vendor, struct con_info *frame) {
 
@@ -208,7 +209,11 @@ void display_connection(struct wireless_scan *ap_entry, char *vendor, struct con
   }
               
   printf(" %s ]\n", frame->qos_priority);             
-  printf("{ Freq: %huMHz\tTX: %ddbm }\n\n", frame->freq, frame->sig_power);  
+  printf("{ Freq: %huMHz\tTX: %ddbm }\n", frame->freq, frame->sig_power);  
+
+  fputs("{ Presumed card vendor: ", stdout);
+  prefix_lookup(frame->core_h.addr_2, vendor);
+  printf(" }\n\n");
 
 }
 
