@@ -211,7 +211,7 @@ void display_connection(struct wireless_scan *ap_entry, char *vendor, struct con
   printf(" %s ]\n", frame->qos_priority);             
   printf("{ Freq: %huMHz\tTX: %ddbm }\n", frame->freq, frame->sig_power);  
 
-  fputs("{ Presumed card vendor: ", stdout);
+  fputs("{ Card vendor: ", stdout);
   prefix_lookup(frame->core_h.addr_2, vendor);
   printf(" }\n\n");
 
