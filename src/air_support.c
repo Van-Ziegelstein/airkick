@@ -168,7 +168,7 @@ void decode_qos(const u_char *header_start, char *priority_buffer, int priority_
 void prefix_lookup(unsigned char *client, char *vendors) {
 
      char prefix_reg[VENDOR_REGEX_LEN + 1];
-     snprintf(prefix_reg, VENDOR_REGEX_LEN + 1, "%02x%02x%02x[[:blank:]]+(.+)", client[0], client[1], client[2]);
+     snprintf(prefix_reg, VENDOR_REGEX_LEN + 1, "%02x%02x%02x[[:blank:]]+([[:graph:][:blank:]]+)", client[0], client[1], client[2]);
      regex_t pattern_buff;
      regmatch_t match[2];
   
