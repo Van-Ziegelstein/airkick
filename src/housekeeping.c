@@ -82,7 +82,7 @@ void *check_calloc(size_t blocknum, size_t blocksize) {
 }
 
 
-int load_vendors(char *mapped_macs) {
+int load_vendors(char **mapped_macs) {
 
    int vendor_fd = open("mac-vendor.txt", O_RDONLY);
    struct stat file_props;
@@ -90,7 +90,7 @@ int load_vendors(char *mapped_macs) {
    if (fstat(vendor_fd, &file_props) == -1)
       perror_exit("Couldn't stat vendor id file");
 
-   mapped_macs = mmap(NULL, file_props.st_size, PROT_READ, MAP_PRIVATE, vendor_fd, 0);
+   *mapped_macs = mmap(NULL, file_props.st_size, PROT_READ, MAP_PRIVATE, vendor_fd, 0);
    if (mapped_macs == MAP_FAILED)
       perror_exit("Couldn't map vendor file into memory");
 
