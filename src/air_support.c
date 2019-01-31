@@ -6,7 +6,7 @@
 #include <stropts.h>
 #include "air_support.h"
 
-#define VENDOR_REGEX_LEN 33
+#define VENDOR_REGEX_LEN 41
 
 
 void usage() {
@@ -168,15 +168,15 @@ void decode_qos(const u_char *header_start, char *priority_buffer, int priority_
 void prefix_lookup(unsigned char *client, char *vendors) {
 
      char prefix_reg[VENDOR_REGEX_LEN + 1];
-     snprintf(prefix_reg, VENDOR_REGEX_LEN + 1, "%02x%02x%02x[[:space:]]+([[:alnum:]]+\n)", client[0], client[1], client[2]);
+     snprintf(prefix_reg, VENDOR_REGEX_LEN + 1, "%02x%02x%02x[[:blank:]]+(.+)", client[0], client[1], client[2]);
      regex_t pattern_buff;
      regmatch_t match[2];
   
   
-     regcomp(&pattern_buff, prefix_reg, REG_EXTENDED); 
+     regcomp(&pattern_buff, prefix_reg, REG_EXTENDED|REG_ICASE);
 
-     if (regexec(&pattern_buff, vendors, 1, match, 0) == 0 && match[1].rm_so != -1) 
-	fwrite(vendors + match[1].rm_so, match[1].rm_eo - match[1].rm_so, 1, stdout);
+     if (regexec(&pattern_buff, vendors, 2, match, 0) == 0 && match[1].rm_so != -1) 
+        fwrite(vendors + match[1].rm_so, match[1].rm_eo - match[1].rm_so, 1, stdout);
      else 
         puts("unknown"); 
 
