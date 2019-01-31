@@ -38,6 +38,6 @@ void decode_qos(const u_char *header_start, char *priority_buffer, int priority_
 
 void prefix_lookup(unsigned char *client, char *vendors); 
 
-void display_connection(struct wireless_scan *ap_entry, struct con_info *frame);
+void display_connection(struct wireless_scan *ap_entry, char *vendors, struct con_info *frame);
 
 #endif

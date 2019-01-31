@@ -33,6 +33,7 @@ struct airloop_params {
     time_t start_time;
     struct frame_thrower *attackers; 
     char *wifi_dev_name;
+    char *vendors;
     char cmd_opts;
 };
 

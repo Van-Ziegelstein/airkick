@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/mman.h>
 #include "air_pollution.h"
 #include "air_control.h"
 #include "air_support.h"
@@ -126,6 +127,7 @@ int main(int argc, char *argv[]) {
      struct signal_thr_opts sig_opts;
      pthread_mutex_t term_mx = PTHREAD_MUTEX_INITIALIZER;    
      pthread_mutex_t pcap_mx = PTHREAD_MUTEX_INITIALIZER;
+     int map_size = load_vendors(&air_data.vendors);
 
      sig_opts.term_mx = &term_mx;
      air_data.term_mx = &term_mx;
@@ -177,6 +179,7 @@ int main(int argc, char *argv[]) {
      capture_session_cleanup(&air_data);
      pthread_mutex_destroy(&term_mx);
      pthread_mutex_destroy(&pcap_mx);
+     munmap(air_data.vendors, map_size);
 
      exit(status);
 

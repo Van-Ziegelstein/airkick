@@ -156,7 +156,7 @@ void air_watch(u_char *session_args, const struct pcap_pkthdr *cap_header, const
   
   if (air_intel->decode_options->con_count > contrack && tail_frame != NULL) {
 
-      display_connection(air_intel->ap_list, tail_frame);    
+      display_connection(air_intel->ap_list, air_intel->vendors, tail_frame);    
       contrack = air_intel->decode_options->con_count;
   }     
    
@@ -187,7 +187,7 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
       if (air_intel->decode_options->con_count > contrack && tail_frame != NULL) {
  
 	  puts(">>>>>>> Blocking: ");
-          display_connection(air_intel->ap_list, tail_frame);   
+          display_connection(air_intel->ap_list, air_intel->vendors, tail_frame);   
           bombard = calloc(1, sizeof(struct frame_thrower));
 
 	  if (bombard == NULL) {

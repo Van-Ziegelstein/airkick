@@ -184,7 +184,7 @@ void prefix_lookup(unsigned char *client, char *vendors) {
 
 }
 
-void display_connection(struct wireless_scan *ap_entry, struct con_info *frame) {
+void display_connection(struct wireless_scan *ap_entry, char *vendor, struct con_info *frame) {
 
   printf("[ Client: %02x", frame->core_h.addr_2[0]);
   for (int i = 1; i < ETH_ALEN; i++) 
