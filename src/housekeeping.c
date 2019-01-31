@@ -84,8 +84,11 @@ void *check_calloc(size_t blocknum, size_t blocksize) {
 
 int load_vendors(char **mapped_macs) {
 
-   int vendor_fd = open(DATADIR "/mac-vendor.txt", O_RDONLY);
    struct stat file_props;
+   int vendor_fd = open(DATADIR "/mac-vendor.txt", O_RDONLY);
+
+   if (vendor_fd == -1)
+      perror_exit("Couldn't open vendor id file");
 
    if (fstat(vendor_fd, &file_props) == -1)
       perror_exit("Couldn't stat vendor id file");
