@@ -11,9 +11,10 @@
 
 void usage() {
 
-   char *messages[14] = { 
+   char *messages[15] = { 
    
-        "Utility to bump wlan clients off the network with spoofed deauthentication or disassociation frames.\n\n",
+	PACKAGE_STRING"\n\n",
+        "Utility to bump wlan clients off the network with spoofed deauthentication or disassociation frames.\n",
         "Currently there are three operation modes:\n\n", 
         "- Mode 1: Tracking connections in the vicinity.\n",
         "Invocation: "PACKAGE_NAME" -m -i <interface> [ -c max_connections ] [ -p ]\n\n",
@@ -30,7 +31,7 @@ void usage() {
         
    };     
 
-   for (int i = 0; i < 14; i++)
+   for (int i = 0; i < 15; i++)
         printf("%s", messages[i]);
    
    exit(EXIT_SUCCESS);
