@@ -1,1 +1,1 @@
-dist_pkgdata_DATA = mac-vendor.txt
+dist_pkgdata_DATA = IEEE-MA-L-Registry.txt
