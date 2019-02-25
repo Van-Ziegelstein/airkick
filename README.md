@@ -25,6 +25,9 @@ and write forged ones to the wire. Mode 1 implements a minimal parser with the p
 of identifying potential targets. Mode 3 builds on mode 1 by additionally dispatching 
 frame injection threads for every connection discovered.
 
+As of version *1.2*, the parsing routines also use a copy of the IEEE Registry to automatically identify
+card vendors by their OUIs.
+
 ## Prerequisites
 This program was designed for Linux platforms, other operating systems are not supported.
 
