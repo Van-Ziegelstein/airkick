@@ -92,15 +92,14 @@ void get_local_mac(char *interface, u_char *local_mac) {
 void decode_radiotap(const u_char *header_start, struct con_info *con_params)  {
    
   const struct ieee80211_radiotap_header *radio_h;
-  const uint *data_pos;
+  int old_offset, data_offset = 0;
    
   radio_h = (const struct ieee80211_radiotap_header *)header_start;
-  data_pos = &radio_h->it_present;
- 
    
-  do
-  data_pos++;
-  while (*data_pos & EXTENDED_BITMAP && radio_h->it_present & EXTENDED_BITMAP);
+  do {
+     old_offset = data_offset;
+     data_offset += sizeof(uint32_t);
+  } while (*((char *)&radio_h->it_present + old_offset) & EXTENDED_BITMAP);
           
    
   for (int i = TSFT; i <= ANTENNA_SIGNAL; i = i<<1) {
@@ -108,31 +107,31 @@ void decode_radiotap(const u_char *header_start, struct con_info *con_params)  {
       switch (radio_h->it_present & i) {
 
          case TSFT: 
-         data_pos = (const uint *)((u_int64_t *)data_pos + 1);
+         data_offset += sizeof(uint64_t);
          break;
    
    
          case FlAGS:
-         data_pos = (const uint *)((uint8_t *)data_pos + 1);
+         data_offset += sizeof(uint8_t);
          break;
    
    
          case RATE:
-         data_pos = (const uint *)((uint8_t *)data_pos + 1);
+         data_offset += sizeof(uint8_t);
          break;       
 
          case CHANNEL:
-         con_params->freq = *((u_int16_t *)data_pos); 
-         data_pos = (const uint *)((u_int16_t *)data_pos + 2);
+         con_params->freq = *((uint16_t *)((char *)&radio_h->it_present + data_offset)); 
+         data_offset += 2 * sizeof(uint16_t);
          break;
    
    
          case FHSS:
-         data_pos = (const uint *)((u_int8_t *)data_pos + 2);
+         data_offset += 2 * sizeof(uint8_t);
          break;
    
          case ANTENNA_SIGNAL:
-         con_params->sig_power = *((char *)data_pos);
+         con_params->sig_power = *((char *)&radio_h->it_present + data_offset);
          break;
    
       }
