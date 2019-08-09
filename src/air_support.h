@@ -10,7 +10,7 @@ struct con_info {
 
   struct ieee80211a_generic_frame core_h;
   char qos_priority[6];
-  u_int16_t freq;
+  uint16_t freq;
   char sig_power;
   struct con_info *next;
 
