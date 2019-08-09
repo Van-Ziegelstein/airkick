@@ -99,7 +99,7 @@ void decode_radiotap(const u_char *header_start, struct con_info *con_params)  {
   do {
      old_offset = data_offset;
      data_offset += sizeof(uint32_t);
-  } while (*((char *)&radio_h->it_present + old_offset) & EXTENDED_BITMAP);
+  } while (*((uint32_t *)((char *)&radio_h->it_present + old_offset)) & EXTENDED_BITMAP);
           
    
   for (int i = TSFT; i <= ANTENNA_SIGNAL; i = i<<1) {
