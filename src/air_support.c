@@ -147,16 +147,16 @@ void decode_qos(const u_char *header_start, char *priority_buffer, int priority_
   char tid = qos_hdr_field >> 12;
    
    
-  if (tid & BE || tid & EE)
+  if (tid == BE || tid == EE)
       strncpy(priority_buffer, "P: BE", priority_buffsize);
        
-  else if (tid & BK || tid & TID_)
+  else if (tid == BK || tid == TID_)
            strncpy(priority_buffer, "P: BG", priority_buffsize);    
         
-  else if (tid & CL || tid & VI)
+  else if (tid == CL || tid == VI)
            strncpy(priority_buffer, "P: VI", priority_buffsize);     
    
-  else if (tid & VO || tid & NC)
+  else if (tid == VO || tid == NC)
            strncpy(priority_buffer, "P: VO", priority_buffsize); 
        
   else
