@@ -160,7 +160,7 @@ void decode_qos(const u_char *header_start, char *priority_buffer, int priority_
            strncpy(priority_buffer, "P: VO", priority_buffsize); 
        
   else
-      strncpy(priority_buffer, "P: XX", priority_buffsize);   
+      strncpy(priority_buffer, "P: ??", priority_buffsize);   
 
 }
 
