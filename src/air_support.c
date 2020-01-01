@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
-#include <stropts.h>
 #include "air_support.h"
 
 #define VENDOR_REGEX_LEN 41
