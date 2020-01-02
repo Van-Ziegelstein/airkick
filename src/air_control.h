@@ -20,9 +20,9 @@ struct frame_thrower {
 
 struct pkt_decode_opts {
      
-     struct con_info *framel_head; 
-     u_char local_mac[ETH_ALEN];
-     int con_count;
+    struct con_info *framel_head; 
+    u_char local_mac[ETH_ALEN];
+    int con_count;
      
 };
 

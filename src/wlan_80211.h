@@ -98,10 +98,10 @@
 
 struct ieee80211_radiotap_header {
 
-        uint8_t    it_version;     
-        uint8_t    it_pad;
-        uint16_t   it_len;         
-        uint32_t   it_present;     
+    uint8_t    it_version;     
+    uint8_t    it_pad;
+    uint16_t   it_len;         
+    uint32_t   it_present;     
 
 }__attribute__((__packed__));
 
@@ -110,12 +110,12 @@ struct ieee80211_radiotap_header {
 
 struct ieee80211a_generic_frame {
     
-  uint16_t frame_ctl;
-  uint16_t duration_id;
-  unsigned char  addr_1[ETH_ALEN];
-  unsigned char  addr_2[ETH_ALEN];
-  unsigned char  addr_3[ETH_ALEN];
-  uint16_t seq_ctl;
+    uint16_t frame_ctl;
+    uint16_t duration_id;
+    unsigned char  addr_1[ETH_ALEN];
+    unsigned char  addr_2[ETH_ALEN];
+    unsigned char  addr_3[ETH_ALEN];
+    uint16_t seq_ctl;
 
 }__attribute__ ((__packed__));
 

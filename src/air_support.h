@@ -8,11 +8,11 @@
 /* Data structure for connection metadata */
 struct con_info {
 
-  struct ieee80211a_generic_frame core_h;
-  char qos_priority[6];
-  uint16_t freq;
-  char sig_power;
-  struct con_info *next;
+    struct ieee80211a_generic_frame core_h;
+    char qos_priority[6];
+    uint16_t freq;
+    char sig_power;
+    struct con_info *next;
 
 };
 
