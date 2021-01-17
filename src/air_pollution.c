@@ -80,7 +80,7 @@ void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) 
     hdr_core = (struct ieee80211a_generic_frame *) (frame_p - sizeof(uint16_t) - sizeof(struct ieee80211a_generic_frame));
 
     srand(time(NULL));
-    main_devhandle = pcap_init(device);
+    main_devhandle = wifi_card_setup(device);
 
 
     printf(">>>> Blocking: %02x", client[0]);
@@ -143,7 +143,7 @@ void *frame_inject_thr(void *job_args) {
     *  libpcap (during the call to pcap_activate()).
     */
     pthread_mutex_lock(inj_args->pcap_mx);
-        inj_assets.dev_handle = pcap_init(inj_args->dev_name);
+        inj_assets.dev_handle = wifi_card_setup(inj_args->dev_name);
     pthread_mutex_unlock(inj_args->pcap_mx);
 
  

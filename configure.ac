@@ -1,8 +1,8 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
-AC_INIT([airkick], [1.2.0], [vanziegelstein@gmail.com])
+AC_PREREQ([2.70])
+AC_INIT([airkick],[1.2.4],[vanziegelstein@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([src/housekeeping.h])
 AC_CONFIG_HEADERS([config.h])
@@ -16,7 +16,6 @@ AC_DEFINE([MAX_CAP_SIZE], [4096], [Max capture length for packets])
 # Checks for programs.
 AC_PROG_CC
 AC_LANG([C])
-AC_PROG_CC_STDC
 
 # Checks for libraries.
 AC_CHECK_LIB([iw], [iw_mac_aton], [], [

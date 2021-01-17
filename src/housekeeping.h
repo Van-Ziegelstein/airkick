@@ -38,7 +38,7 @@ void inj_thr_cleanup(void *args);
 
 void free_list(void *head_node, enum res_list type);
 
-pcap_t *pcap_init(char *interface);
+pcap_t *wifi_card_setup(char *interface);
 
 void capture_session_setup(struct airloop_params *cap_options);
 

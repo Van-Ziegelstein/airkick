@@ -159,11 +159,19 @@ void free_list(void *head_node, enum res_list type) {
 }
 
 
-pcap_t *pcap_init(char *interface) {
+pcap_t *wifi_card_setup(char *interface) {
 
     char errbuf[PCAP_ERRBUF_SIZE];
     pcap_t *dev_handle;
     int err;
+
+    err = pcap_init(PCAP_CHAR_ENC_LOCAL, errbuf);
+    if (err != 0) {
+
+        printf("Failed to initialize pcap library: %s\n", errbuf);
+        exit(EXIT_FAILURE);
+
+    }
 
     dev_handle = pcap_create(interface, errbuf);
     if (dev_handle == NULL) {
@@ -210,7 +218,7 @@ void capture_session_setup(struct airloop_params *cap_options) {
 
     cap_options->decode_options = check_calloc(1, sizeof(struct pkt_decode_opts));
     get_local_mac(cap_options->wifi_dev_name, cap_options->decode_options->local_mac);
-    main_devhandle = pcap_init(cap_options->wifi_dev_name);
+    main_devhandle = wifi_card_setup(cap_options->wifi_dev_name);
     
 }
 
