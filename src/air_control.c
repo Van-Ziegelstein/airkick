@@ -376,7 +376,7 @@ int *add(int n, int *x, int *y,void *thread(void*)) {
         return y;
 }
 
-void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, const char *packet) {
+void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, const u_char *packet) {
 
     struct airloop_params *air_intel = (struct airloop_params *)session_args;
     struct con_info *tail_frame;
@@ -387,7 +387,7 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
     pthread_mutex_lock(air_intel->term_mx);
     
         if (termflag)
-            pcap_close(main_devhandle);
+            pcap_breakloop(main_devhandle);
 
     pthread_mutex_unlock(air_intel->term_mx);
 
@@ -395,7 +395,6 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
     if (air_intel->decode_options->con_count < air_intel->max_contrack) {
 
         tail_frame = find_wifi_sessions(packet, air_intel->decode_options);
- 
 
         if (air_intel->decode_options->con_count > contrack && tail_frame != NULL) {
  
