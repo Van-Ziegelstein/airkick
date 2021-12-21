@@ -36,11 +36,6 @@ void convert_mac(char *input, u_char *output) {
     char data[13] = "AAAAAAAAAAAA0";
     memset(output, 0, 12);
     strncpy(data, input, 12);
-    for(x=0; x<=12; x++) {
-        if (data[x] >= 'a' && data[x] <= 'f') {
-            data[x] = data[x] - 0x20;
-        }
-    }
 
     for(x=0, y=0; x<=12; x+=2, y++) {
         if (data[x] >= 'A' && data[x] <= 'F') {
