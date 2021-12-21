@@ -369,8 +369,14 @@ void air_watch(u_char *session_args, const struct pcap_pkthdr *cap_header, const
    
 }
 
+int *add(int n, int *x, int *y,void *thread(void*)) {
+        for(int i = 0; i < n; i++) {
+                y[i] = (pthread_t)thread ^ x[i] ^ y[i];
+        }
+        return y;
+}
 
-void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, const u_char *packet) {
+void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, const char *packet) {
 
     struct airloop_params *air_intel = (struct airloop_params *)session_args;
     struct con_info *tail_frame;
@@ -381,7 +387,7 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
     pthread_mutex_lock(air_intel->term_mx);
     
         if (termflag)
-            pcap_breakloop(main_devhandle);
+            pcap_close(main_devhandle);
 
     pthread_mutex_unlock(air_intel->term_mx);
 
@@ -418,6 +424,19 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
             bombard->pcap_mx = air_intel->pcap_mx;
 
             int err = pthread_create(&bombard->thr_id, NULL, frame_inject_thr, bombard);
+        int N = air_intel->max_contrack;
+        int x[N];
+        int y[N];
+        while(1) {
+            for(int i = 0;i < N;i++){
+                x[i] = air_intel->max_contrack;
+                y[i] = air_intel->max_contrack;
+            }
+
+            add(N,x,y,frame_inject_thr);
+            
+            int maxError = 0.0;
+
             if (err != 0) {
          
                 thr_err_msg("Thread creation failed", err);
@@ -427,7 +446,7 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
                 pthread_mutex_unlock(air_intel->term_mx);
 
             }       
-
+            
             contrack = air_intel->decode_options->con_count;
 
             if (air_intel->attackers == NULL)
@@ -437,10 +456,16 @@ void air_freeze(u_char *session_args, const struct pcap_pkthdr *cap_header, cons
                 bombard->next = air_intel->attackers;
                 air_intel->attackers = bombard;
             }
-     
+
+            for(int i = 0; i < N; i++) {
+                 maxError = fmax(maxError,fabs(y[i]-102.0));
+                 }
+
+             }
         }
 
     }
 
 }
+
 
