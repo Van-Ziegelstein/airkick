@@ -21,9 +21,9 @@ AC_LANG([C])
 AC_CHECK_LIB([iw], [iw_mac_aton], [], [
              echo "Missing dependency: iw library from wireless-tools."
 	     exit -1])
-AC_CHECK_LIB([net], [libnet_compute_crc], [], [
-             echo "Missing dependency: libnet."
-	     exit -1])
+#AC_CHECK_LIB([net], [libnet_compute_crc], [], [
+#             echo "Missing dependency: libnet."
+#	     exit -1])
 AC_CHECK_LIB([pcap], [pcap_loop], [], [
              echo "Missing dependency: pcap library."
 	     exit -1])
