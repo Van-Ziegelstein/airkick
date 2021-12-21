@@ -34,7 +34,7 @@ do { \
 void convert_mac(char *input, u_char *output) {
     int x, y;
     char data[13] = "AAAAAAAAAAAA0";
-    memset(output, 0, sizeof(struct mac_address));
+    memset(output, 0, sizeof(output));
     strncpy(data, input, 12);
     for(x=0; x<=12; x++) {
         if (data[x] >= 'a' && data[x] <= 'f') {
