@@ -175,7 +175,7 @@ void *frame_inject_thr(void *job_args) {
     while (1) {
     
         hdr_core->duration_id = rand_r(&rand_state) % 32767;
-        *((uint32_t *)frame_p) = libnet_compute_crc(inj_assets.packet + sizeof(radiotap_preamble), frame_size);
+        *((uint32_t *)frame_p) = inj_cksum(inj_assets.packet + sizeof(radiotap_preamble), frame_size);
 
 
         if (pcap_sendpacket(inj_assets.dev_handle, inj_assets.packet, frame_size + sizeof(radiotap_preamble) + FCS_LEN) != 0) {
