@@ -10,10 +10,12 @@
 /* radiotap_preamble doesn't have to be visible outside of this file */
 
 static u_char radiotap_preamble [] = {
-                                    0x00,
-                                    0x00,
-                                    0x08, 0x00,
-                                    0x00,0x00,0x00,0x00,
+    0x00, 0x00, // <-- radiotap version
+    0x0c, 0x00, // <- radiotap header length
+    0x04, 0x80, 0x00, 0x00, // <-- bitmap
+    0x00, // <-- rate
+    0x00, // <-- padding for natural alignment
+    0x18, 0x00, // <-- TX flags
 };
 
 
