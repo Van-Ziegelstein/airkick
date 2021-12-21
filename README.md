@@ -36,9 +36,8 @@ Your wireless card should support capturing packets in [promiscuous mode](https:
 as well as packet injection, ideally **at the same time**. Otherwise errors are likely to occur.
 
 ##### Library Dependencies
-* [iwlib](https://hewlettpackard.github.io/wireless-tools/Tools.html) from wireless tools *(for scanning and some other stuff)*.
+* [iwlib](https://hewlettpackard.github.io/wireless-tools/Tools.html) from wireless tools *(for scanning)*.
 * [libpcap](http://www.tcpdump.org/) *(packet capture and injection)*.
-* [libnet](https://sourceforge.net/projects/libnet-dev/) *(currently only used for the CRC checksum)*!!! REMOVED !!!.
 
 Additionally, the parallelism of mode 3 is implemented via Posix Threads. So make sure an implementation
 of the pthreads API is present.
