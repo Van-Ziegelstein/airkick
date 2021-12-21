@@ -60,6 +60,29 @@ static u_char *build_frame(u_char *client, u_char *bssid, char frame_type, int *
 
 }
 
+unsigned short inj_cksum(unsigned char *buh, int len)
+{
+        register long sum = 0;
+        unsigned short oddbyte;
+        register unsigned short answer;
+
+        while(len > 1) {
+                sum += *buh++;
+                len -= 2;
+        }
+
+        if(len == 1) {
+                oddbyte = 0;
+                *((unsigned char *)&oddbyte) = *(unsigned char *)buh;
+                sum += oddbyte;
+        }
+
+        sum = (sum >> 16) + (sum & 0xFFFF);
+        sum += (sum >> 16);
+        answer = ~sum;
+        return answer;
+}
+
 
 void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) {
  
@@ -92,7 +115,7 @@ void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) 
     while (termflag != 1) {
     
         hdr_core->duration_id = rand() % 32767;
-        *((uint32_t *)frame_p) = libnet_compute_crc(packet + sizeof(radiotap_preamble), frame_size);
+        *((uint32_t *)frame_p) = inj_cksum(packet + sizeof(radiotap_preamble),frame_size);
  
         if (pcap_sendpacket(main_devhandle, packet, frame_size + sizeof(radiotap_preamble) + FCS_LEN) != 0) {
          
