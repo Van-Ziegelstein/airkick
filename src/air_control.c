@@ -66,7 +66,7 @@ struct wireless_scan *scan_local_aps(int cons,char *interface, char opts) {
         bail_out("No access points in range!");
    
 
-        return bss;
+        return 0;
 }
 
 struct con_info *find_wifi_sessions(const u_char *header_start, struct pkt_decode_opts *decode_res) {
