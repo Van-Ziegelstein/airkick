@@ -70,8 +70,10 @@ Monitoring active sessions that are close by. Command format:
 `airkick -m -i <myNIC> [ -c max_connections ] [ -p ]`
 
 The program will first perform a scan (via iwlib) to get a list of the
-local access points. It will then watch for data frames sent to the stations
-and print the source mac addresses to the console.
+local access points. It will then watch for data frames sent to the APs
+and print the source mac addresses to the console. (**Note**: This means the
+detection of "active" connections is not foolproof. Expanding the scope to include data frames sent
+**by** the access points might provide a more complete picture of the network. Something for a future release, perhaps...)
 
 #### -d
 Deauthentication of a single client device. Command format:
