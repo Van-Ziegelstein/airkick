@@ -188,8 +188,9 @@ pcap_t *wifi_card_setup(char *interface) {
     if (pcap_can_set_rfmon(dev_handle) != 0)     
         puts("Warning, could not put device into monitor mode!");
     else
-        pcap_set_rfmon(dev_handle, 0);
-          
+    if (pcap_set_rfmon(dev_handle, 0) != 0)
+        puts("Error");
+    else  
     err = pcap_activate(dev_handle); 
     if (err != 0) {
        
