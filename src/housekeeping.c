@@ -182,12 +182,13 @@ pcap_t *wifi_card_setup(char *interface) {
     }
  
     pcap_set_snaplen(dev_handle, MAX_CAP_SIZE);
-    pcap_set_promisc(dev_handle, 1);
-
-    if (pcap_can_set_rfmon(dev_handle) == 1)     
-        pcap_set_rfmon(dev_handle, 1);
+    if (pcap_set_promisc(dev_handle, 1) != 0)
+    	puts("Warning, could not set promisc mode!");
     else
+    if (pcap_can_set_rfmon(dev_handle) != 0)     
         puts("Warning, could not put device into monitor mode!");
+    else
+        pcap_set_rfmon(dev_handle, 0);
           
     err = pcap_activate(dev_handle); 
     if (err != 0) {
