@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.70])
+AC_PREREQ([2.71])
 AC_INIT([airkick],[1.2.4],[vanziegelstein@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([src/housekeeping.h])
