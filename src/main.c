@@ -31,6 +31,26 @@ do { \
     } \
 } while(0)
    
+void convert_mac(char *input, u_char *output) {
+    int x, y;
+    char data[13] = "AAAAAAAAAAAA0";
+    memset(output, 0, 12);
+    strncpy(data, input, 12);
+
+    for(x=0, y=0; x<=12; x+=2, y++) {
+        if (data[x] >= 'A' && data[x] <= 'F') {
+            output[y] = ((data[x] - 55) * 0x10);
+        } else {
+            output[y] = ((data[x] - 0x30) * 0x10);
+        }
+
+        if (data[x+1] >= 'A' && data[x] <= 'F') {
+            output[y] |= (data[x+1] - 55);
+        } else {
+            output[y] |= (data[x+1] - 0x30);
+        }
+    }
+}
 
 
 int main(int argc, char *argv[]) {
@@ -205,8 +225,12 @@ int main(int argc, char *argv[]) {
 
         errno = 0;
 
-        iw_mac_aton(spoofed_mac, conv_client, ETH_ALEN);  
-        iw_mac_aton(bssid, conv_bssid, ETH_ALEN);
+        // convert from input to output (char* to hex)
+        convert_mac(spoofed_mac, conv_client);
+        convert_mac(bssid, conv_bssid);
+
+        //iw_mac_aton(spoofed_mac, conv_client, ETH_ALEN);  
+        //iw_mac_aton(bssid, conv_bssid, ETH_ALEN);
 
         if (errno != 0) 
             perror_exit("Invalid MAC addresses");

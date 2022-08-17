@@ -85,7 +85,7 @@ void *check_calloc(size_t blocknum, size_t blocksize) {
 int load_vendors(char **mapped_macs) {
 
     struct stat file_props;
-    int vendor_fd = open(DATADIR "/IEEE-MA-L-Registry.txt", O_RDONLY);
+    int vendor_fd = open(DATADIR, O_RDONLY);
 
 
     if (vendor_fd == -1)
@@ -182,13 +182,15 @@ pcap_t *wifi_card_setup(char *interface) {
     }
  
     pcap_set_snaplen(dev_handle, MAX_CAP_SIZE);
-    pcap_set_promisc(dev_handle, 1);
-
-    if (pcap_can_set_rfmon(dev_handle) == 1)     
-        pcap_set_rfmon(dev_handle, 1);
+    if (pcap_set_promisc(dev_handle, 1) != 0)
+    	puts("Warning, could not set promisc mode!");
     else
+    if (pcap_can_set_rfmon(dev_handle) != 0)     
         puts("Warning, could not put device into monitor mode!");
-          
+    else
+    if (pcap_set_rfmon(dev_handle, 0) != 0)
+        puts("Error");
+    else  
     err = pcap_activate(dev_handle); 
     if (err != 0) {
        

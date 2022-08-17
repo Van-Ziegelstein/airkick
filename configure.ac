@@ -21,15 +21,69 @@ AC_LANG([C])
 AC_CHECK_LIB([iw], [iw_mac_aton], [], [
              echo "Missing dependency: iw library from wireless-tools."
 	     exit -1])
-AC_CHECK_LIB([net], [libnet_compute_crc], [], [
-             echo "Missing dependency: libnet."
-	     exit -1])
+AC_CHECK_LIB([mnl], [mnl_nlmsg_get_payload], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_get_type], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_type_valid], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_validate2], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_validate], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_socket_close], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_get_payload_len], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_get_u8], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_get_str], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_next], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_ok], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_attr_parse], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_socket_open], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_socket_bind], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_socket_get_fd], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_socket_recvfrom], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_cb_run], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_socket_sendto], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
+AC_CHECK_LIB([mnl], [mnl_nlmsg_put_extra_header], [], [
+	      echo "Missing dependency: mnl libary from netlink."
+	      exit -1])
 AC_CHECK_LIB([pcap], [pcap_loop], [], [
              echo "Missing dependency: pcap library."
 	     exit -1])
 
 # Checks for header files.
-AC_CHECK_HEADERS([fcntl.h stdint.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h stdint.h stdlib.h string.h unistd.h math.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T

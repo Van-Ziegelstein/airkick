@@ -3,6 +3,7 @@
 
 #include "main.h"
 
+#define DATADIR "/usr/local/share/airkick/IEEE-MA-L-Registry.txt"
 
 /* Data types for the linked lists and the threaded signal handler */
 enum res_list { IW_AP_SCAN, PACKET_DATA, THR_ID };
